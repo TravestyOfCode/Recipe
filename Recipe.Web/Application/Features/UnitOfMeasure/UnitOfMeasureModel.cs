@@ -19,7 +19,7 @@ public class UnitOfMeasureListModel
 
     public UnitOfMeasureListModel(IList<UnitOfMeasureModel> unitOfMeasures, PageQuery query, double totalCount)
     {
-        PageResult = new PageQueryResult(query.Page, query.PerPage, query.SortBy, query.SortOrder, Math.Ceiling(totalCount / query.PerPage.Value));
+        PageResult = new PageQueryResult(query.Page, query.PerPage, query.SortBy, query.SortOrder, totalCount);
 
         UnitOfMeasures = unitOfMeasures;
     }
