@@ -28,7 +28,8 @@ public class Program
 
             options.Password.RequiredLength = 8;
         })
-            .AddEntityFrameworkStores<AppDbContext>();
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddTokenProvider<DataProtectorTokenProvider<AppUser>>(TokenOptions.DefaultProvider);
 
         // Add and configure Controllers
         builder.Services.AddControllersWithViews();
@@ -44,6 +45,10 @@ public class Program
             options.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         });
 
+        // Add Emails sender
+        // TODO: Add a real email sender
+        builder.Services.AddSingleton<IEmailSender, NoOpEmailSender>();
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -55,11 +60,17 @@ public class Program
         }
 
         app.UseHttpsRedirection();
+
         app.UseStaticFiles();
 
         app.UseRouting();
 
         app.UseAuthorization();
+
+        app.MapAreaControllerRoute(
+            name: "Account",
+            areaName: "account",
+            pattern: "account/{controller=Manage}/{action=Index}");
 
         app.MapControllerRoute(
             name: "default",
