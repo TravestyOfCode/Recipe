@@ -31,6 +31,14 @@ public record Result(int StatusCode) : IResult
 
     public Result(int StatusCode, Error error) : this(StatusCode) => AddError(error);
 
+    public Result(int StatusCode, IEnumerable<Error> errors) : this(StatusCode)
+    {
+        foreach (var error in errors)
+        {
+            AddError(error);
+        }
+    }
+
     public static Result Ok() => new Result(200);
 
     public static Result<T> Ok<T>(T value) => new Result<T>(200, value);
@@ -38,6 +46,8 @@ public record Result(int StatusCode) : IResult
     public static Result BadRequest() => new Result(400);
 
     public static Result BadRequest(Error error) => new Result(400, error);
+
+    public static Result BadRequest(IEnumerable<Error> errors) => new Result(400, errors);
 
     public static Result<T> BadRequest<T>(Error error) => new Result<T>(400, error);
 
