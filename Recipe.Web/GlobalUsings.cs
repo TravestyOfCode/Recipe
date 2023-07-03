@@ -1,1 +1,9 @@
-﻿global using Microsoft.Extensions.Logging;
+﻿global using FluentValidation;
+global using MediatR;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.Logging;
+global using Recipe.Web.Application.Features.Shared;
+global using System;
+global using System.Collections.Generic;
+global using System.Threading;
+global using System.Threading.Tasks;
