@@ -1,0 +1,18 @@
+﻿@model Recipe.Web.Application.Features.Account.ConfirmEmailModel
+
+@{
+    ViewData["Title"] = "Confirm email";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if(Model.IsConfirmed)
+{
+    <p>Thank you for confirming your account.</p>
+}
+else
+{
+    <div asp-validation-for="All" class="text-danger"></div>
+    <p>An email has been sent with a confirmation code. Please use the link in the email to confirm your account.</p>
+    
+}
