@@ -1,7 +1,5 @@
-using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,26 +13,35 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        // Add and configure DBContext
         builder.Services.AddDbContext<AppDbContext>(options =>
         {
             options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+
+            options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         });
 
-
+        // Add and configure Identity
         builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
         {
             options.SignIn.RequireConfirmedAccount = true;
+
             options.Password.RequiredLength = 8;
         })
             .AddEntityFrameworkStores<AppDbContext>();
 
+        // Add and configure Controllers
         builder.Services.AddControllersWithViews();
 
+        // Add and configure Validators
         builder.Services.AddValidatorsFromAssembly(System.Reflection.Assembly.GetExecutingAssembly());
 
+        // Add and configure MediatR
         builder.Services.AddMediatR(options =>
         {
             options.RegisterServicesFromAssembly(System.Reflection.Assembly.GetExecutingAssembly());
+
+            options.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         });
 
         var app = builder.Build();
