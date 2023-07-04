@@ -25,7 +25,7 @@
 }
 
 <ul class="pagination">
-    @if (maxPage - minPage > 4)
+    @if (Model.TotalPages - 1 > 4)
     {
         <li class="page-item @(page == 1 ? "disabled": "")">
             <a asp-all-route-data="routeData" asp-route-page="1" class="page-link" tabindex="@(page == 1 ? "-1" : "")" aria-label="First">
@@ -55,7 +55,7 @@
         </a>
     </li>
 
-    @if(maxPage - minPage > 4)
+    @if (Model.TotalPages - 1 > 4)
     {
         <li class="page-item @(page == Model.TotalPages ? "disabled": "")">
             <a asp-all-route-data="routeData" asp-route-page="@Model.TotalPages" class="page-link" tabindex="@(page == Model.TotalPages ? "-1" : "")" aria-label="Last">
