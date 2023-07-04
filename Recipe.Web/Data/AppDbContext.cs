@@ -6,6 +6,8 @@ namespace Recipe.Web.Data;
 
 public class AppDbContext : IdentityDbContext<AppUser>
 {
+    public DbSet<Category> Categories { get; set; }
+
     public DbSet<UnitOfMeasure> UnitOfMeasures { get; set; }
 
     public AppDbContext(DbContextOptions options) : base(options)
