@@ -8,9 +8,9 @@
 @{
     var page = Model.Page.Value;
 
-    var minPage = Math.Max(1, page - 2);
+    var minPage = Math.Min(Math.Max(1, page - 2), Model.TotalPages - 4);
 
-    var maxPage = Math.Min(page + 2, Model.TotalPages);
+    var maxPage = Math.Max(Math.Min(page + 2, Model.TotalPages), 5);
 
     var routeData = new Dictionary<string, string>
     {
@@ -25,40 +25,40 @@
 }
 
 <ul class="pagination">
-    @if (maxPage - minPage > 4)
+    @if (Model.TotalPages - 1 > 4)
     {
         <li class="page-item @(page == 1 ? "disabled": "")">
-            <a asp-route-page="1" asp-all-route-data="routeData" class="page-link" tabindex="@(page == 1 ? "-1" : "")" aria-label="First">
+            <a asp-all-route-data="routeData" asp-route-page="1" class="page-link" tabindex="@(page == 1 ? "-1" : "")" aria-label="First">
                 <span aria-hidden="true">&laquo;</span>
                 <span class="visually-hidden">First</span>
             </a>
         </li>
     }
     <li class="page-item @(page == 1 ? "disabled" : "")">
-        <a asp-route-page="@(page - 1)" asp-all-route-data="routeData" class="page-link" tabindex="@(page == 1 ? "-1" : "")" aria-label="Previous">
+        <a asp-all-route-data="routeData" asp-route-page="@(page - 1)" class="page-link" tabindex="@(page == 1 ? "-1" : "")" aria-label="Previous">
             <span aria-hidden="true">&lt;</span>
             <span class="visually-hidden">Previous</span>
         </a>
     </li>
 
-    @for(int index=minPage;index<maxPage;index++)
+    @for(double index=minPage;index<=maxPage;index++)
     {
         <li class="page-item @(index == page ? "active" : "")">
-            <a asp-route-page="@index" asp-all-route-data="routeData" class="page-link" tabindex="@(page == index ? "-1" : "")">@index<span class="visually-hidden">(current)</span></a>
+            <a asp-all-route-data="routeData" asp-route-page="@index" class="page-link" tabindex="@(page == index ? "-1" : "")">@index<span class="visually-hidden">(current)</span></a>
         </li>
     }
 
     <li class="page-item @(page == Model.TotalPages ? "disabled" : "")">
-        <a asp-route-page="@(page + 1)" asp-all-route-data="routeData" class="page-link" tabindex="@(page == Model.TotalPages ? "-1" : "")" aria-label="Next">
+        <a asp-all-route-data="routeData" asp-route-page="@(page + 1)" class="page-link" tabindex="@(page == Model.TotalPages ? "-1" : "")" aria-label="Next">
             <span aria-hidden="true">&gt;</span>
             <span class="visually-hidden">Next</span>
         </a>
     </li>
 
-    @if(maxPage - minPage > 4)
+    @if (Model.TotalPages - 1 > 4)
     {
         <li class="page-item @(page == Model.TotalPages ? "disabled": "")">
-            <a asp-route-page="@Model.TotalPages" asp-all-route-data="routeData" class="page-link" tabindex="@(page == Model.TotalPages ? "-1" : "")" aria-label="Last">
+            <a asp-all-route-data="routeData" asp-route-page="@Model.TotalPages" class="page-link" tabindex="@(page == Model.TotalPages ? "-1" : "")" aria-label="Last">
                 <span aria-hidden="true">&raquo;</span>
                 <span class="visually-hidden">Last</span>
             </a>
