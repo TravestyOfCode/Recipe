@@ -8,6 +8,8 @@ public class AppDbContext : IdentityDbContext<AppUser>
 {
     public DbSet<Category> Categories { get; set; }
 
+    public DbSet<Product> Products { get; set; }
+
     public DbSet<UnitOfMeasure> UnitOfMeasures { get; set; }
 
     public AppDbContext(DbContextOptions options) : base(options)
