@@ -6,6 +6,7 @@
 
 <h1>@ViewData["Title"]</h1>
 
+<div asp-validation-summary="All" class="text-danger"></div>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -19,18 +20,25 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Categories) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @if (Model != null && Model.Categories != null)
+        {
+            @foreach (var item in Model.Categories)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
     </tbody>
 </table>
 
-<partial name="PageNavPartial" model="Model.PageResult" />
+@if (Model != null && Model.Categories != null)
+{
+    <partial name="PageNavPartial" model="Model.PageResult" />
+}

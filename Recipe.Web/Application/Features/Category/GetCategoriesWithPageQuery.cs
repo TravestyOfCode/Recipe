@@ -49,3 +49,11 @@ public class GetCategoriesWithPageQueryHandler : IRequestHandler<GetCategoriesWi
         }
     }
 }
+
+public class GetCategoriesWithPageQueryValdiator : AbstractValidator<GetCategoriesWithPageQuery>
+{
+    public GetCategoriesWithPageQueryValdiator()
+    {
+        Include(new PageQueryValidator());
+    }
+}
