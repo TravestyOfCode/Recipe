@@ -8,9 +8,9 @@
 @{
     var page = Model.Page.Value;
 
-    var minPage = Math.Min(Math.Max(1, page - 2), Model.TotalPages - 4);
+    var minPage = Math.Max(Math.Max(1, page - 2), Model.TotalPages - 5);
 
-    var maxPage = Math.Max(Math.Min(page + 2, Model.TotalPages), 5);
+    var maxPage = Math.Max(Math.Min(page + 2, Model.TotalPages), Model.TotalPages - minPage);
 
     var routeData = new Dictionary<string, string>
     {
