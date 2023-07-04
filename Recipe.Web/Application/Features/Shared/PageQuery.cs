@@ -6,23 +6,25 @@ public enum SortOrder { ASC, DESC }
 
 public class PageQuery
 {
-    private int? page;
-    public int? Page
-    {
-        get => page;
-        set => page = value == null || value >= 1 ? value : throw new InvalidOperationException($"{Page} must be null or greater than zero.");
-    }
+    public int? Page { get; set; }
 
-    private int? perPage;
-    public int? PerPage
-    {
-        get => perPage;
-        set => perPage = value == null || value >= 1 ? value : throw new InvalidOperationException($"{PerPage} must be null or greater than zero.");
-    }
+    public int? PerPage { get; set; }
 
     public string SortBy { get; set; }
 
     public SortOrder SortOrder { get; set; }
+}
+
+public class PageQueryValidator : AbstractValidator<PageQuery>
+{
+    public PageQueryValidator()
+    {
+        RuleFor(p => p.Page)
+            .GreaterThan(0);
+
+        RuleFor(p => p.PerPage)
+            .GreaterThan(0);
+    }
 }
 
 public record PageQueryResult(int? Page, int? PerPage, string SortBy, SortOrder SortOrder, double TotalCount)
@@ -72,3 +74,4 @@ public static class PageQueryExtensions
         return result;
     }
 }
+

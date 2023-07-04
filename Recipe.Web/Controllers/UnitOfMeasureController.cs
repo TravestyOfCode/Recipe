@@ -27,6 +27,13 @@ public class UnitOfMeasureController : Controller
             return View(result.Value);
         }
 
+        if (result.IsBadRequest)
+        {
+            ModelState.AddErrors(result);
+
+            return View();
+        }
+
         return StatusCode(result.StatusCode);
     }
 

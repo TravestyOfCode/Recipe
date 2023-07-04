@@ -49,3 +49,11 @@ public class GetUnitOfMeasuresWithPageQueryHandler : IRequestHandler<GetUnitOfMe
         }
     }
 }
+
+public class GetUnitOfMeasuresWithPageQueryValidator : AbstractValidator<GetUnitOfMeasuresWithPageQuery>
+{
+    public GetUnitOfMeasuresWithPageQueryValidator()
+    {
+        Include(new PageQueryValidator());
+    }
+}
