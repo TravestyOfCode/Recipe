@@ -1,4 +1,4 @@
-namespace Recipe.Web.Models;
+namespace Recipe.Web.ViewModels;
 
 public class ErrorViewModel
 {
