@@ -1,0 +1,20 @@
+﻿@model Recipe.Web.ViewModels.Ingredient.IngredientAddViewModel
+
+@{
+    SelectList uoms = new SelectList(Model.UnitOfMeasrues, "Key", "Value");
+
+    var index = "ing-" + Guid.NewGuid();
+}
+
+<div class="form-group" id="@index">
+    <input type="hidden" name="@(Model.NamePrefix + "ingredients.Index")" value="@index" />
+    <label class="form-label">Qty.</label>
+    <input type="number" name="@(Model.NamePrefix + "ingredients["+@index+"].Quantity")" class="" />
+    <label class="form-label">Product</label>
+    <input type="text" name="@(Model.NamePrefix + "ingredients["+@index+"].Product")" class="" />
+    <label class="form-label">Units</label>
+    <select name="@(Model.NamePrefix + "ingredients["+@index+"].UnitOfMeasureId")" asp-items="uoms" class="col">
+        <option value=""></option>
+    </select>
+    <button type="button" class="btn btn-danger col-auto" onclick="DeleteIngredient('@index')">Delete</button>
+</div>

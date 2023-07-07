@@ -1,0 +1,40 @@
+﻿@model Recipe.Web.Application.Features.Recipe.RecipeModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>@Model.Title</h1>
+<div class="recipe-category">Categories: @Model.Categories</div>
+<div class="row">
+    <div class="ingredient-sidebar col-auto border-success">
+        <table class="table">
+            <caption class="caption-top">Ingredients</caption>
+            <tbody>
+                @foreach (var ingredient in Model.Ingredients)
+                {
+                    <tr>
+                        <td>@(ingredient.Quantity.ToString("#.#"))</td>
+                        <td>@(ingredient.UnitOfMeasure?.Abbreviation)</td>
+                        <td>@ingredient.Product</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        
+    </div>
+    <div class="recipe-content col-8">
+        <div class="recipe-description">
+            @Model.Description
+        </div>
+        <hr/>
+        <div class="recipe-instructions">
+            <h4>Instructions:</h4>
+            @Model.Instructions
+        </div>
+    </div>
+</div>
+<hr />
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

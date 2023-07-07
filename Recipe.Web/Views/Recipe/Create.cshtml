@@ -1,0 +1,111 @@
+﻿@model Recipe.Web.Application.Features.Recipe.CreateRecipeModel
+
+@{
+    ViewData["Title"] = "Create";
+
+    var uoms = new SelectList(Model.UnitOfMeasures, "Key", "Value");
+
+    var index = "ing-" + Guid.NewGuid();
+}
+
+<h1>Create</h1>
+
+<h4>Recipe</h4>
+<hr />
+<div class="row">
+    <div class="col-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <div class="col-6">
+                    <label asp-for="Title" class="control-label fw-bold"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-6">
+                    <label asp-for="Categories" class="control-label fw-bold"></label>
+                    <input asp-for="Categories" class="form-control" />
+                    <span asp-validation-for="Categories" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-6">
+                    <label asp-for="Description" class="control-label fw-bold"></label>
+                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
+                <div class="fw-bold">Ingredients</div>
+                <div id="ingredients-list" class="">
+                    <div class="form-group" id="@index">
+                        <input type="hidden" name="ingredients.Index" value="@index" />
+                        <label class="form-label">Qty.</label>
+                        <input type="number" name="ingredients[@index].Quantity" class="" />
+                        <label class="form-label">Product</label>
+                        <input type="text" name="ingredients[@index].Product" class="" />
+                        <label class="form-label">Units</label>
+                        <select name="ingredients[@index].UnitOfMeasureId" asp-items="uoms" class="col">
+                            <option value=""></option>
+                        </select>
+                        <button type="button" class="btn btn-danger col-auto" onclick="DeleteIngredient('@index')">Delete</button>
+                    </div>
+                </div>
+                <button type="button" onclick="AddNewIngredient()" class="btn btn-primary">Add Ingredient</button>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label asp-for="Instructions" class="control-label fw-bold"></label>
+                <textarea asp-for="Instructions" class="form-control" rows="6"></textarea>
+                <span asp-validation-for="Instructions" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        function AddNewIngredient() {
+            const ingredientsList = document.getElementById("ingredients-list");
+
+            fetch("AddIngredient", {
+                method: "GET",
+                mode: "cors",
+                credentials: "same-origin"
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("There was an error adding an new ingredient." + response.statusText);
+                    }
+
+                    return response.text();
+                })
+                .then((response) => {
+                    ingredientsList.insertAdjacentHTML("beforeend", response);
+                });
+        }
+
+        function DeleteIngredient(id) {
+            if (confirm("Are you sure you want to delete this ingredient?")) {
+                document.getElementById(id).remove();
+            }
+
+        }
+    </script>
+}
