@@ -8,7 +8,11 @@ public class AppDbContext : IdentityDbContext<AppUser>
 {
     public DbSet<Category> Categories { get; set; }
 
+    public DbSet<Ingredient> Ingredients { get; set; }
+
     public DbSet<Product> Products { get; set; }
+
+    public DbSet<Recipe> Recipes { get; set; }
 
     public DbSet<UnitOfMeasure> UnitOfMeasures { get; set; }
 
