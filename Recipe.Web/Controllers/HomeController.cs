@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Recipe.Web.Models;
+using Recipe.Web.ViewModels;
 using System.Diagnostics;
 
 namespace Recipe.Web.Controllers;
