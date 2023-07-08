@@ -35,7 +35,11 @@ public class GetRecipeByIdQueryHandler : IRequestHandler<GetRecipeByIdQuery, Res
             var entity = await dbContext.Recipes.Where(p => p.UserId.Equals(request.UserId) && p.Id.Equals(request.Id))
                 .Select(p => new RecipeModel()
                 {
-                    Categories = p.Categories,
+                    Categories = p.CategoryList.Select(c => new Category.CategoryModel()
+                    {
+                        Id = c.Id,
+                        Name = c.Name
+                    }).ToList(),
                     Description = p.Description,
                     Id = p.Id,
                     Ingredients = request.IncludeIngredients ? p.Ingredients.Select(i => new IngredientModel()

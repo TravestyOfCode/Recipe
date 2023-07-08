@@ -37,7 +37,11 @@ public class GetRecipesWithPageQueryHandler : IRequestHandler<GetRecipesWithPage
                 .AsPageQuery(request)
                 .Select(p => new RecipeModel()
                 {
-                    Categories = p.Categories,
+                    Categories = p.CategoryList.Select(c => new Category.CategoryModel()
+                    {
+                        Id = c.Id,
+                        Name = c.Name
+                    }).ToList(),
                     Description = p.Description,
                     Id = p.Id,
                     Title = p.Title
