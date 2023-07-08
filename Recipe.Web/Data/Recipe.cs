@@ -12,6 +12,8 @@ public class Recipe
 
     public string Categories { get; set; }
 
+    public List<Category> CategoryList { get; set; }
+
     public string Description { get; set; }
 
     public List<Ingredient> Ingredients { get; set; }
