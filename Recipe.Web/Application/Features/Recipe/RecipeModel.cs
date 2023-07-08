@@ -9,8 +9,6 @@ public class RecipeModel
 
     public string Title { get; set; }
 
-    // public string Categories { get; set; }
-
     public List<CategoryModel> Categories { get; set; }
 
     public string Description { get; set; }

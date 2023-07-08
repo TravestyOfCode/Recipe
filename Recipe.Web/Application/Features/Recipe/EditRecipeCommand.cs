@@ -43,7 +43,7 @@ public class EditRecipeCommandHandler : IRequestHandler<EditRecipeCommand, Resul
         try
         {
             var entity = await dbContext.Recipes.Where(p => p.Id.Equals(request.Id) && p.UserId.Equals(request.UserId))
-                .Include(p => p.CategoryList)
+                .Include(p => p.Categories)
                 .Include(p => p.Ingredients)
                 .AsTracking()
                 .SingleOrDefaultAsync(cancellationToken);
@@ -54,7 +54,7 @@ public class EditRecipeCommandHandler : IRequestHandler<EditRecipeCommand, Resul
             }
 
             entity.Title = request.Title;
-            entity.CategoryList = await ToCategoryList(request.Categories, request.UserId, cancellationToken);
+            entity.Categories = await ToCategoryList(request.Categories, request.UserId, cancellationToken);
             entity.Description = request.Description;
             entity.Instructions = request.Instructions;
 

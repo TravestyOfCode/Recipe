@@ -44,7 +44,7 @@ public class CreateRecipeCommandHandler : IRequestHandler<CreateRecipeCommand, R
         {
             var entity = dbContext.Recipes.Add(new Data.Recipe()
             {
-                CategoryList = await ToCategoryList(request.Categories, request.UserId, cancellationToken),
+                Categories = await ToCategoryList(request.Categories, request.UserId, cancellationToken),
                 Description = request.Description,
                 Ingredients = request.Ingredients.Select(p => new Data.Ingredient()
                 {
