@@ -128,7 +128,7 @@ public class RecipeController : Controller
 
         if (result.WasSuccessful)
         {
-            return View(await GenerateEditViewModel(result.Value, cancellationToken));
+            return View(result.Value);
         }
 
         return StatusCode(result.StatusCode);
