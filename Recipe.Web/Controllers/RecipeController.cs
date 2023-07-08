@@ -82,6 +82,8 @@ public class RecipeController : Controller
     {
         request.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+        request.IncludeIngredients = true;
+
         var result = await mediator.Send(request, cancellationToken);
 
         if (result.WasSuccessful)
