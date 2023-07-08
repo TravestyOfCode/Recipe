@@ -15,7 +15,9 @@ public class CreateRecipeCommand : IRequest<Result>
     [MaxLength(64)]
     public string Title { get; set; }
 
-    public string Categories { get; set; }
+    //public string Categories { get; set; }
+
+    public List<string> Categories { get; set; }
 
     public string Description { get; set; }
 
@@ -42,7 +44,7 @@ public class CreateRecipeCommandHandler : IRequestHandler<CreateRecipeCommand, R
         {
             var entity = dbContext.Recipes.Add(new Data.Recipe()
             {
-                Categories = request.Categories,
+                CategoryList = await ToCategoryList(request.Categories, request.UserId, cancellationToken),
                 Description = request.Description,
                 Ingredients = request.Ingredients.Select(p => new Data.Ingredient()
                 {
@@ -65,5 +67,31 @@ public class CreateRecipeCommandHandler : IRequestHandler<CreateRecipeCommand, R
 
             return Result.ServerError();
         }
+    }
+
+    private async Task<List<Data.Category>> ToCategoryList(IEnumerable<string> categories, string userId, CancellationToken cancellationToken)
+    {
+        List<Data.Category> results = new List<Data.Category>();
+
+        foreach (var category in categories)
+        {
+            var entity = await dbContext.Categories
+                .AsTracking()
+                .Where(p => p.UserId.Equals(userId) && p.Name.Equals(category))
+                .SingleOrDefaultAsync(cancellationToken);
+
+            if (entity == null)
+            {
+                entity = new Data.Category()
+                {
+                    Name = category,
+                    UserId = userId
+                };
+            }
+
+            results.Add(entity);
+        }
+
+        return results;
     }
 }
