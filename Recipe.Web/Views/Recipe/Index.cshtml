@@ -34,7 +34,7 @@
                         @Html.DisplayFor(modelItem => item.Title)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Categories)
+                        @(string.Join(", ", item.Categories.Select(p => p.Name).ToList()))
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Description)
