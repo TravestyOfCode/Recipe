@@ -11,6 +11,8 @@ public class Category
     public AppUser User { get; set; }
 
     public string Name { get; set; }
+
+    public List<Recipe> Recipes { get; set; }
 }
 
 public class CategoryConfiguration : IEntityTypeConfiguration<Category>

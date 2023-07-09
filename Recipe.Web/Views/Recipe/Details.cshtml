@@ -5,7 +5,7 @@
 }
 
 <h1>@Model.Title</h1>
-<div class="recipe-category">Categories: @Model.Categories</div>
+<div class="recipe-category">Categories: @(string.Join(", ", Model.Categories.Select(p => p.Name)))</div>
 <div class="row">
     <div class="ingredient-sidebar col-auto border-success">
         <table class="table">

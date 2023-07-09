@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Recipe.Web.Data;
 
@@ -11,9 +12,11 @@ using Recipe.Web.Data;
 namespace Recipe.Web.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230708141949_Link_Recipe_Category")]
+    partial class Link_Recipe_Category
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,13 +27,13 @@ namespace Recipe.Web.Data.Migrations
 
             modelBuilder.Entity("CategoryRecipe", b =>
                 {
-                    b.Property<int>("CategoriesId")
+                    b.Property<int>("CategoryListId")
                         .HasColumnType("int");
 
                     b.Property<int>("RecipesId")
                         .HasColumnType("int");
 
-                    b.HasKey("CategoriesId", "RecipesId");
+                    b.HasKey("CategoryListId", "RecipesId");
 
                     b.HasIndex("RecipesId");
 
@@ -325,6 +328,9 @@ namespace Recipe.Web.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Categories")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -387,7 +393,7 @@ namespace Recipe.Web.Data.Migrations
                 {
                     b.HasOne("Recipe.Web.Data.Category", null)
                         .WithMany()
-                        .HasForeignKey("CategoriesId")
+                        .HasForeignKey("CategoryListId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

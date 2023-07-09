@@ -17,7 +17,7 @@ public class EditRecipeCommand : IRequest<Result>
     [MaxLength(64)]
     public string Title { get; set; }
 
-    public string Categories { get; set; }
+    public List<string> Categories { get; set; }
 
     public string Description { get; set; }
 
@@ -43,6 +43,7 @@ public class EditRecipeCommandHandler : IRequestHandler<EditRecipeCommand, Resul
         try
         {
             var entity = await dbContext.Recipes.Where(p => p.Id.Equals(request.Id) && p.UserId.Equals(request.UserId))
+                .Include(p => p.Categories)
                 .Include(p => p.Ingredients)
                 .AsTracking()
                 .SingleOrDefaultAsync(cancellationToken);
@@ -53,7 +54,7 @@ public class EditRecipeCommandHandler : IRequestHandler<EditRecipeCommand, Resul
             }
 
             entity.Title = request.Title;
-            entity.Categories = request.Categories;
+            entity.Categories = await ToCategoryList(request.Categories, request.UserId, cancellationToken);
             entity.Description = request.Description;
             entity.Instructions = request.Instructions;
 
@@ -103,6 +104,32 @@ public class EditRecipeCommandHandler : IRequestHandler<EditRecipeCommand, Resul
 
             return Result.ServerError();
         }
+    }
+
+    private async Task<List<Data.Category>> ToCategoryList(IEnumerable<string> categories, string userId, CancellationToken cancellationToken)
+    {
+        List<Data.Category> results = new List<Data.Category>();
+
+        foreach (var category in categories)
+        {
+            var entity = await dbContext.Categories
+                .AsTracking()
+                .Where(p => p.UserId.Equals(userId) && p.Name.Equals(category))
+                .SingleOrDefaultAsync(cancellationToken);
+
+            if (entity == null)
+            {
+                entity = new Data.Category()
+                {
+                    Name = category,
+                    UserId = userId
+                };
+            }
+
+            results.Add(entity);
+        }
+
+        return results;
     }
 }
 

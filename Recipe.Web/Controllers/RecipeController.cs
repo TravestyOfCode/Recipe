@@ -82,6 +82,8 @@ public class RecipeController : Controller
     {
         request.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+        request.IncludeIngredients = true;
+
         var result = await mediator.Send(request, cancellationToken);
 
         if (result.WasSuccessful)
@@ -128,7 +130,7 @@ public class RecipeController : Controller
 
         if (result.WasSuccessful)
         {
-            return View(await GenerateEditViewModel(result.Value, cancellationToken));
+            return View(result.Value);
         }
 
         return StatusCode(result.StatusCode);

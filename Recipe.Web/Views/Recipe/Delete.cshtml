@@ -21,7 +21,7 @@
             @Html.DisplayNameFor(model => model.Categories)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Categories)
+            @(string.Join(", ", Model.Categories.Select(p => p.Name).ToList()))
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Description)

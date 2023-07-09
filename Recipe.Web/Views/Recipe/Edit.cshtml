@@ -21,11 +21,24 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-6">
+                <label>Categories</label>
+                <div id="category-list">
+                @foreach(var category in Model.Recipe.Categories)
+                {                
+                    <div id="@category.Id">
+                        <input type="text" name="Recipe.Categories" class="" value="@category.Name" />
+                        <button type="button" class="btn btn-danger btn-sm" onclick="DeleteCategory('@category.Id')">X</button>
+                    </div>
+                }
+                </div>
+                <button type="button" class="btn btn-success" onclick="AddNewCategory()">+</button>
+                
+                
+@*                <div class="col-6">
                     <label asp-for="@Model.Recipe.Categories" class="control-label fw-bold"></label>
                     <input asp-for="@Model.Recipe.Categories" class="form-control" />
                     <span asp-validation-for="@Model.Recipe.Categories" class="text-danger"></span>
-                </div>
+                </div>*@
             </div>
             <div class="form-group">
                 <div class="col-6">
@@ -111,6 +124,39 @@
                 document.getElementById(id).remove();
             }
 
+        }
+
+        function AddNewCategory() {
+            const categoryList = document.getElementById("category-list");
+
+            const index = "cat-" + GetUniqueId();
+            const category = document.createElement("div");
+            category.setAttribute("id", index);
+
+            const inputName = document.createElement("input");
+            inputName.setAttribute("type", "text");
+            inputName.setAttribute("name", "Recipe.Categories");
+
+            const buttonDelete = document.createElement("button");
+            buttonDelete.setAttribute("type", "button");
+            buttonDelete.setAttribute("class", "btn btn-danger btn-sm");
+            buttonDelete.setAttribute("onclick", "DeleteCategory('" + index + "')");
+            buttonDelete.innerText = "X";
+
+            category.appendChild(inputName);
+            category.appendChild(buttonDelete);
+
+            categoryList.insertBefore(category, null);
+        }
+
+        function DeleteCategory(id) {
+            if (confirm("Are you sure you want to delete this cateogry?")) {
+                document.getElementById(id).remove();
+            }
+        }
+
+        function GetUniqueId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
         }
     </script>
 }
