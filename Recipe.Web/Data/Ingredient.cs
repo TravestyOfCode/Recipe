@@ -12,7 +12,11 @@ public class Ingredient
 
     public decimal Quantity { get; set; }
 
-    public string Product { get; set; }
+    //public string Product { get; set; }
+
+    public int ProductId { get; set; }
+
+    public Product Product { get; set; }
 
     public int? UnitOfMeasureId { get; set; }
 
@@ -27,9 +31,5 @@ public class IngredientConfiguration : IEntityTypeConfiguration<Ingredient>
 
         builder.Property(p => p.Quantity)
             .HasColumnType("decimal(9,5)");
-
-        builder.Property(p => p.Product)
-            .IsRequired(true)
-            .HasMaxLength(64);
     }
 }
