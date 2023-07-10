@@ -45,7 +45,7 @@ public class GetRecipeByIdQueryHandler : IRequestHandler<GetRecipeByIdQuery, Res
                     Ingredients = request.IncludeIngredients ? p.Ingredients.Select(i => new IngredientModel()
                     {
                         Id = i.Id,
-                        Product = i.Product,
+                        Product = i.Product.Name,
                         Quantity = i.Quantity,
                         RecipeId = i.RecipeId,
                         UnitOfMeasureId = i.UnitOfMeasureId,
