@@ -136,4 +136,19 @@ public class ProductController : Controller
 
         return StatusCode(result.StatusCode);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetProductsByName(GetProductsStartingWithQuery request, CancellationToken cancellationToken)
+    {
+        request.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        var result = await mediator.Send(request, cancellationToken);
+
+        if (result.WasSuccessful)
+        {
+            return Ok(result.Value);
+        }
+
+        return StatusCode(result.StatusCode);
+    }
 }
