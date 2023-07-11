@@ -11,6 +11,8 @@ public class Product
     public AppUser User { get; set; }
 
     public string Name { get; set; }
+
+    public List<Ingredient> Ingredients { get; set; }
 }
 
 public class ProductConfiguration : IEntityTypeConfiguration<Product>

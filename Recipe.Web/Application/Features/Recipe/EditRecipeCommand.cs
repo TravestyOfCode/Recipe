@@ -62,6 +62,8 @@ public class EditRecipeCommandHandler : IRequestHandler<EditRecipeCommand, Resul
 
             foreach (var ingredient in request.Ingredients)
             {
+                var product = await ToProduct(ingredient.Product, request.UserId, cancellationToken);
+
                 if (ingredient.Id != 0)
                 {
                     var entityIngredient = await dbContext.Ingredients.Where(p => p.Id.Equals(ingredient.Id) && p.RecipeId.Equals(request.Id))
@@ -75,7 +77,7 @@ public class EditRecipeCommandHandler : IRequestHandler<EditRecipeCommand, Resul
                         return Result.NotFound();
                     }
 
-                    entityIngredient.Product = ingredient.Product;
+                    entityIngredient.Product = product;
                     entityIngredient.Quantity = ingredient.Quantity;
                     entityIngredient.UnitOfMeasureId = ingredient.UnitOfMeasureId;
 
@@ -85,7 +87,7 @@ public class EditRecipeCommandHandler : IRequestHandler<EditRecipeCommand, Resul
                 {
                     entity.Ingredients.Add(new Data.Ingredient()
                     {
-                        Product = ingredient.Product,
+                        Product = product,
                         Quantity = ingredient.Quantity,
                         RecipeId = ingredient.RecipeId,
                         UnitOfMeasureId = ingredient.UnitOfMeasureId
@@ -117,19 +119,30 @@ public class EditRecipeCommandHandler : IRequestHandler<EditRecipeCommand, Resul
                 .Where(p => p.UserId.Equals(userId) && p.Name.Equals(category))
                 .SingleOrDefaultAsync(cancellationToken);
 
-            if (entity == null)
+            entity ??= new Data.Category()
             {
-                entity = new Data.Category()
-                {
-                    Name = category,
-                    UserId = userId
-                };
-            }
+                Name = category,
+                UserId = userId
+            };
 
             results.Add(entity);
         }
-
         return results;
+    }
+    private async Task<Data.Product> ToProduct(string product, string userId, CancellationToken cancellationToken)
+    {
+        var entity = await dbContext.Products
+            .AsTracking()
+            .Where(p => p.Name.Equals(product) && p.UserId.Equals(userId))
+            .SingleOrDefaultAsync(cancellationToken);
+
+        entity ??= new Data.Product()
+        {
+            Name = product,
+            UserId = userId
+        };
+
+        return entity;
     }
 }
 

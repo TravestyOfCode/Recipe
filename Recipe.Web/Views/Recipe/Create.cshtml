@@ -53,7 +53,7 @@
                         <label class="form-label">Qty.</label>
                         <input type="number" name="ingredients[@index].Quantity" class="" />
                         <label class="form-label">Product</label>
-                        <input type="text" name="ingredients[@index].Product" class="" />
+                        <input type="text" name="ingredients[@index].Product" class="" list="product-list" oninput="UpdateProductList(this)"/>
                         <label class="form-label">Units</label>
                         <select name="ingredients[@index].UnitOfMeasureId" asp-items="uoms" class="col">
                             <option value=""></option>
@@ -80,6 +80,9 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+<datalist id="product-list">
+</datalist>
 
 
 @section Scripts {
@@ -147,6 +150,29 @@
 
         function GetUniqueId() {
             return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        function UpdateProductList(e){
+            fetch("../Product/GetProductsByName?page=1&perPage=10&sortBy=Name&sortOrder=ASC&name=" + e.value, {
+                method: "GET",
+                mode: "cors",
+                credentials: "same-origin"
+            })
+            .then((response) => {
+                if(!response.ok){
+                    throw new Error("There was an error getting the products list." + response.statusText);
+                }
+                return response.json();
+            })
+            .then((ProductListModel) => {
+                console.log(ProductListModel);
+                let optionsList = "";
+                ProductListModel.products.forEach(product => {
+                    optionsList += "<option value='" + product.name + "' />";
+                })
+
+                document.getElementById("product-list").innerHTML = optionsList;
+            })
         }
     </script>
 }
